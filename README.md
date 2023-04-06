@@ -1,66 +1,284 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# REST API Photo Sharing
+Created by Fajar Hamdani \
+Start Date: 06 April 2023
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## How To Run
 
-## About Laravel
+1. `composer install`
+2. `php artisan key:generate`
+3. `php artisan migrate`
+4. `php artisan db:seed`
+5. `php artisan storage:link`
+6. `php artisan jwt:secret`
+7. `php artisan serve`
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Design Database
+users
+- id [pk]
+- email [unique]
+- password
+- created_at
+- updated_at
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+photos
+- id [pk]
+- user_id [fk users, on delete cascade]
+- caption [text, nullable]
+- photo_path [nullable]
+- created_at
+- updated_at
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+photo_tags
+- id [pk]
+- photo_id [fk photos, on delete cascade]
+- tag_name
 
-## Learning Laravel
+photo_likes [pivot table of users and photos]
+- id [pk]
+- user_id [fk users, on delete cascade]
+- photo_id [fk photos, on delete cascade]
+- created_at
+- updated_at
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## API Documentation
+Base URL: http://localhost:8000
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+**API Login** \
+Method: POST \
+Path: /api/auth/login \
+Headers: 
+- Content-Type: application/json
+Payload:
+```
+{
+    "email": "fajarhamdani70@gmail.com",
+    "password": "fajar123"
+}
+```
+Response:
+```
+{
+    "success": true,
+    "data": {
+        "user": {
+            "id": 1,
+            "email": "fajarhamdani70@gmail.com",
+            "created_at": "2023-04-06T07:28:11.000000Z",
+            "updated_at": "2023-04-06T07:28:11.000000Z"
+        },
+        "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2ODA3NjYxMTYsImV4cCI6MTY4MDc2OTcxNiwibmJmIjoxNjgwNzY2MTE2LCJqdGkiOiJsYnpXUUpBeFdpcWhHTHFkIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.RaWJOAVmGoHQRob1p42E3mTNexVCRXVmbjBFJGWufBk"
+    },
+    "error": null
+}
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**API Get Photos** \
+Method: GET \
+Path: /api/photos \
+Headers:
+- Authorization: Bearer <token>
+Response:
+```
+{
+    "success": true,
+    "data": [
+        {
+            "id": 5,
+            "user_id": 1,
+            "caption": "Updated content",
+            "photo_path": "photos/kETAFjn2tdrV6DGGB7gZ7EaoLwjp2J2bmWsgzfOt.png",
+            "created_at": "2023-04-06T07:45:01.000000Z",
+            "updated_at": "2023-04-06T07:45:33.000000Z",
+            "tags": [
+                {
+                    "tag_name": "#tag_1"
+                },
+                {
+                    "tag_name": "#tag_2"
+                }
+            ],
+            "likes": [
+                {
+                    "id": 1,
+                    "email": "fajarhamdani70@gmail.com"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "user_id": 1,
+            "caption": null,
+            "photo_path": "photos/NEOmlR1ojdOPUB1LIiUwnp3wSL1FZPalfY1Mff4y.png",
+            "created_at": "2023-04-06T07:41:10.000000Z",
+            "updated_at": "2023-04-06T07:44:43.000000Z",
+            "tags": [
+                {
+                    "tag_name": "#tag_1"
+                },
+                {
+                    "tag_name": "#tag_2"
+                }
+            ],
+            "likes": []
+        }
+    ],
+    "error": null
+}
+```
 
-## Laravel Sponsors
+**API Create Photo** \
+Method: POST \
+Path: /api/photos \
+Headers:
+- Authorization: Bearer <token>
+- Content-Type: multipart/form-data
+Form Data:
+- photo [required, image, max 5mb]
+- caption [optional]
+- tags [optional, format: #tag_1 #tag_2 #tag_3 #tag_n]
+Response:
+```
+{
+    "success": true,
+    "data": {
+        "user_id": 1,
+        "caption": "Example caption",
+        "photo_path": "photos/ZL0dRd5Mtt4B85uHSDIZtELCcvS8Wi3dh0ldu9s7.png",
+        "updated_at": "2023-04-06T10:08:50.000000Z",
+        "created_at": "2023-04-06T10:08:50.000000Z",
+        "id": 6,
+        "tags": [
+            {
+                "tag_name": "#tag1"
+            },
+            {
+                "tag_name": "#tag2"
+            },
+            {
+                "tag_name": "#tag3"
+            }
+        ]
+    },
+    "error": null
+}
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+**API Photo Detail** \
+Method: GET \
+Path: /api/photos/<photo_id> \
+Headers:
+- Authorization: Bearer <token>
+Response:
+```
+{
+    "success": true,
+    "data": {
+        "id": 5,
+        "user_id": 1,
+        "caption": "Updated content",
+        "photo_path": "photos/kETAFjn2tdrV6DGGB7gZ7EaoLwjp2J2bmWsgzfOt.png",
+        "created_at": "2023-04-06T07:45:01.000000Z",
+        "updated_at": "2023-04-06T07:45:33.000000Z",
+        "tags": [
+            {
+                "tag_name": "#tag_1"
+            },
+            {
+                "tag_name": "#tag_2"
+            }
+        ],
+        "likes": [
+            {
+                "id": 1,
+                "email": "fajarhamdani70@gmail.com"
+            }
+        ]
+    },
+    "error": null
+}
+```
 
-### Premium Partners
+**API Update Photo** \
+Method: PUT \
+Path: /api/photos/<photo_id> \
+Headers:
+- Authorization: Bearer <token>
+- Content-Type: application/json
+Payload:
+```
+{
+    "caption": "Updated content",
+    "tags": "#tag_1 #tag_2"
+}
+```
+Response:
+```
+{
+    "success": true,
+    "data": {
+        "id": 5,
+        "user_id": 1,
+        "caption": "Updated content",
+        "photo_path": "photos/kETAFjn2tdrV6DGGB7gZ7EaoLwjp2J2bmWsgzfOt.png",
+        "created_at": "2023-04-06T07:45:01.000000Z",
+        "updated_at": "2023-04-06T07:45:33.000000Z",
+        "tags": [
+            {
+                "tag_name": "#tag_1"
+            },
+            {
+                "tag_name": "#tag_2"
+            }
+        ]
+    },
+    "error": null
+}
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+**API Delete Photo** \
+Method: DELETE \
+Path: /api/photos/<photo_id> \
+Headers:
+- Authorization: Bearer <token>
+Response:
+```
+{
+    "success": true,
+    "data": {
+        "message": "Photo deleted."
+    },
+    "error": null
+}
+```
 
-## Contributing
+**API Like Photo** \
+Method: POST \
+Path: /api/photos/<photo_id>/like \
+Headers:
+- Authorization: Bearer <token>
+Response:
+```
+{
+    "success": true,
+    "data": {
+        "message": "Like success."
+    },
+    "error": null
+}
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+**API Unlike Photo** \
+Method: POST \
+Path: /api/photos/<photo_id>/unlike \
+Headers:
+- Authorization: Bearer <token>
+Response:
+```
+{
+    "success": true,
+    "data": {
+        "message": "Unlike success."
+    },
+    "error": null
+}
+```

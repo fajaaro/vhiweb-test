@@ -20,7 +20,7 @@ class PhotoController extends Controller
     public function index()
     {
         return $this->success(
-            Photo::with('tags')->latest()->get()
+            Photo::with('tags', 'likes')->latest()->get()
         );
     }
 
