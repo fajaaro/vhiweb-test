@@ -1,0 +1,313 @@
+{
+	"info": {
+		"_postman_id": "d1369b97-6b63-448c-881c-5230654505b2",
+		"name": "VhiWEB",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10776318"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json()\r",
+									"\r",
+									"pm.collectionVariables.set('token', jsonData.data.token)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"fajarhamdani70@gmail.com\",\r\n    \"password\": \"fajar123\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Photo",
+			"item": [
+				{
+					"name": "Get Photos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/photos",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"photos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Photo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json()\r",
+									"\r",
+									"pm.collectionVariables.set('photo_id', jsonData.data.id)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "photo",
+									"description": "required",
+									"type": "file",
+									"src": "/C:/Users/fajar/Downloads/sample.png"
+								},
+								{
+									"key": "caption",
+									"value": "Example caption",
+									"description": "optional",
+									"type": "text"
+								},
+								{
+									"key": "tags",
+									"value": "#tag1 #tag2 #tag3",
+									"description": "optional, format: #tag_1 #tag_2 #tag_3 #tag_n",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/photos",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"photos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Photo Detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/photos/{{photo_id}}?type=data",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"photos",
+								"{{photo_id}}"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "data",
+									"description": "option: data, file"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Photo",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"caption\": \"Updated content\",\r\n    \"tags\": \"#tag_1 #tag_2\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/photos/{{photo_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"photos",
+								"{{photo_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Photo",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/photos/{{photo_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"photos",
+								"{{photo_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Like Photo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/photos/{{photo_id}}/like",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"photos",
+								"{{photo_id}}",
+								"like"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unlike Photo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/photos/{{photo_id}}/unlike",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"photos",
+								"{{photo_id}}",
+								"unlike"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "photo_id",
+			"value": ""
+		}
+	]
+}
