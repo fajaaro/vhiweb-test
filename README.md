@@ -47,7 +47,8 @@ Base URL: http://localhost:8000
 Method: POST \
 Path: /api/auth/login \
 Headers: 
-- Content-Type: application/json
+- Content-Type: application/json 
+
 Payload:
 ```
 {
@@ -76,7 +77,8 @@ Response:
 Method: GET \
 Path: /api/photos \
 Headers:
-- Authorization: Bearer <token>
+- Authorization: Bearer token
+
 Response:
 ```
 {
@@ -130,12 +132,14 @@ Response:
 Method: POST \
 Path: /api/photos \
 Headers:
-- Authorization: Bearer <token>
+- Authorization: Bearer token
 - Content-Type: multipart/form-data
+
 Form Data:
 - photo [required, image, max 5mb]
 - caption [optional]
 - tags [optional, format: #tag_1 #tag_2 #tag_3 #tag_n]
+
 Response:
 ```
 {
@@ -167,7 +171,8 @@ Response:
 Method: GET \
 Path: /api/photos/<photo_id> \
 Headers:
-- Authorization: Bearer <token>
+- Authorization: Bearer token
+
 Response:
 ```
 {
@@ -202,8 +207,9 @@ Response:
 Method: PUT \
 Path: /api/photos/<photo_id> \
 Headers:
-- Authorization: Bearer <token>
+- Authorization: Bearer token
 - Content-Type: application/json
+
 Payload:
 ```
 {
@@ -239,7 +245,8 @@ Response:
 Method: DELETE \
 Path: /api/photos/<photo_id> \
 Headers:
-- Authorization: Bearer <token>
+- Authorization: Bearer token
+
 Response:
 ```
 {
@@ -255,7 +262,8 @@ Response:
 Method: POST \
 Path: /api/photos/<photo_id>/like \
 Headers:
-- Authorization: Bearer <token>
+- Authorization: Bearer token
+
 Response:
 ```
 {
@@ -271,7 +279,8 @@ Response:
 Method: POST \
 Path: /api/photos/<photo_id>/unlike \
 Headers:
-- Authorization: Bearer <token>
+- Authorization: Bearer token
+
 Response:
 ```
 {
