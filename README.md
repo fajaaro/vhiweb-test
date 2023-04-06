@@ -41,7 +41,7 @@ photo_likes [pivot table of users and photos]
 - updated_at
 
 ## API Documentation
-Base URL: http://localhost:8000
+Base URL: http://128.199.225.24
 
 **API Login** \
 Method: POST \
