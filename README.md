@@ -40,6 +40,9 @@ photo_likes [pivot table of users and photos]
 - created_at
 - updated_at
 
+## ERD (Entity Relationship Diagram)
+![ERD](https://images2.imgbox.com/96/70/AUHD1lx6_o.jpg)
+
 ## API Documentation
 Base URL: http://128.199.225.24
 
