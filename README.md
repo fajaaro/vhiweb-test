@@ -66,9 +66,7 @@ Response:
     "data": {
         "user": {
             "id": 1,
-            "email": "fajarhamdani70@gmail.com",
-            "created_at": "2023-04-06T07:28:11.000000Z",
-            "updated_at": "2023-04-06T07:28:11.000000Z"
+            "email": "fajarhamdani70@gmail.com"
         },
         "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2ODA3NjYxMTYsImV4cCI6MTY4MDc2OTcxNiwibmJmIjoxNjgwNzY2MTE2LCJqdGkiOiJsYnpXUUpBeFdpcWhHTHFkIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.RaWJOAVmGoHQRob1p42E3mTNexVCRXVmbjBFJGWufBk"
     },
